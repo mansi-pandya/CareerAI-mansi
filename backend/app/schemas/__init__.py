@@ -1,0 +1,53 @@
+from app.schemas.user import (
+    UserCreate,
+    UserLogin,
+    UserResponse,
+    UserUpdate,
+    TokenResponse,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+    RefreshTokenRequest,
+)
+from app.schemas.profile import (
+    ProfileCreate,
+    ProfileUpdate,
+    ProfileResponse,
+    EducationCreate,
+    EducationResponse,
+    SkillResponse,
+    StudentSkillCreate,
+    StudentSkillResponse,
+    CareerPreferenceCreate,
+    CareerPreferenceResponse,
+)
+from app.schemas.resume import (
+    ResumeCreate,
+    ResumeUpdate,
+    ResumeResponse,
+    ResumeDetailResponse,
+    ResumeVersionResponse,
+    ResumeSectionResponse,
+    ResumeUploadResponse,
+    ResumeBuilderRequest,
+    AIImproveRequest,
+    AIImproveResponse,
+    ATSRecommendationResponse,
+    ATSScoreResponse,
+    ATSAnalysisRequest,
+    ATSScoreHistoryItem,
+    ParsedResumeData,
+)
+
+__all__ = [
+    "UserCreate", "UserLogin", "UserResponse", "UserUpdate",
+    "TokenResponse", "ForgotPasswordRequest", "ResetPasswordRequest", "RefreshTokenRequest",
+    "ProfileCreate", "ProfileUpdate", "ProfileResponse",
+    "EducationCreate", "EducationResponse",
+    "SkillResponse", "StudentSkillCreate", "StudentSkillResponse",
+    "CareerPreferenceCreate", "CareerPreferenceResponse",
+    "ResumeCreate", "ResumeUpdate", "ResumeResponse", "ResumeDetailResponse",
+    "ResumeVersionResponse", "ResumeSectionResponse", "ResumeUploadResponse",
+    "ResumeBuilderRequest", "AIImproveRequest", "AIImproveResponse",
+    "ATSRecommendationResponse", "ATSScoreResponse", "ATSAnalysisRequest",
+    "ATSScoreHistoryItem", "ParsedResumeData",
+]
