@@ -4,14 +4,15 @@ from datetime import datetime
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from app.main import app
 from app.auth.dependencies import get_current_user
 from app.core.security import create_access_token
-from app.database.database import Base
+from app.database.database import Base, get_db
 from app.models.user import User, Role
 from app.models.profile import StudentProfile
-from app.models.jobs import Job, JobSource, SavedJob
+from app.models.jobs import Job, JobSearchLog, JobSource, SavedJob
 from app.models.interviews import Interview
 from app.models.resume import Resume, ATSScore
 from app.models.opportunities import OpportunityCheck
@@ -19,7 +20,11 @@ from app.models.opportunities import OpportunityCheck
 
 class AdminApiTests(unittest.TestCase):
     def setUp(self):
-        self.engine = create_engine("sqlite:///:memory:")
+        self.engine = create_engine(
+            "sqlite://",
+            connect_args={"check_same_thread": False},
+            poolclass=StaticPool,
+        )
         self.Session = sessionmaker(bind=self.engine)
         Base.metadata.create_all(bind=self.engine)
 
@@ -31,7 +36,7 @@ class AdminApiTests(unittest.TestCase):
                 db.close()
 
         app.dependency_overrides.clear()
-        app.dependency_overrides.update({__import__("app.database.database", fromlist=["get_db"]).get_db: override_get_db})
+        app.dependency_overrides[get_db] = override_get_db
 
         with self.Session() as db:
             admin = User(
@@ -53,6 +58,7 @@ class AdminApiTests(unittest.TestCase):
             db.add(StudentProfile(user_id=student.id, is_profile_complete=True))
             db.add(JobSource(name="Demo", slug="demo", is_active=True))
             db.flush()
+            db.add(JobSearchLog(user_id=student.id, query_params={"query": "Developer"}, results_count=1))
             db.add(Job(
                 source_id=1,
                 title="Developer",
